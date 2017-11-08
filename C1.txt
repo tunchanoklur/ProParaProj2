@@ -1,0 +1,10 @@
+1  Annie  1  afternoon 65
+2  Braum  1  afternoon 15
+3  Irelia 3  evening   30
+4  Xayah  2  evening   45
+5  Rakan  1  afternoon 15
+6  Fiora  3  afternoon 10
+7  Syndra 3  evening   5
+8  Jhin   1  afternoon 15
+9  Bard   2  evening   25
+10 Poro   2  evening   35

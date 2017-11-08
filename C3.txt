@@ -1,0 +1,10 @@
+1  Elsa     3  evening   65
+2  Anna     1  afternoon 15
+3  Olaf     1  evening   30
+4  Ariel    2  evening   45
+5  Aurora   2  afternoon 15
+6  Belle    3  afternoon 10
+7  Jasmine  3  evening   5
+8  Rapunzel 1  afternoon 15
+9  Merida   2  evening   25
+10 Moana    1  afternoon 35

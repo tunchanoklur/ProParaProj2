@@ -1,0 +1,10 @@
+1  Woody    2  afternoon 5
+2  Jessie   3  evening   14
+3  Hamm     1  evening   80
+4  Rex      2  afternoon 36
+5  Slinky   1  afternoon 12
+6  Buzz     3  afternoon 27
+7  Greenman 3  evening   9
+8  Potato   1  afternoon 42
+9  Andy     3  evening   33
+10 Sergeant 2  evening   28
