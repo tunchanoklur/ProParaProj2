@@ -27,7 +27,7 @@ public class Show{
         }
     }
     public void printavailseat(){
-        System.out.printf("Day %d (%-9s): available seats = %3d ",day,time,seats);
+        System.out.printf("Day %d (%-9s): available seats = %3d \n",day,time,seats);
     }
     public void printsummary(int ini_seats){
         System.out.printf("Day %d (%-9s) : %3d seats taken\n",day,time,(ini_seats-seats));

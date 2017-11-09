@@ -2,6 +2,7 @@ package proparaproj2;
 
 import java.util.*;
 import java.io.*;
+import java.util.concurrent.CyclicBarrier;
 
 public class Theatre {
     public static void main(String[] args) {
@@ -34,9 +35,9 @@ public class Theatre {
         do{
             wrong_input = false;
                 try{
-                    System.out.printf("Checkpoint at transaction ID: ");
+                    System.out.printf("Checkpoint at transaction ID(2-10): ");
                     checkpoint = user_in.nextInt();
-                    if(checkpoint<=0|| checkpoint>10)throw new NumberFormatException();
+                    if(checkpoint<=1|| checkpoint>10)throw new NumberFormatException();
                 }
                 catch(NumberFormatException e){
                     System.out.println("Input not in range! please try again");
@@ -61,14 +62,13 @@ public class Theatre {
         
         //Create 3 TicketCounter
         TicketCounter[] counters=new TicketCounter[3];
+        CyclicBarrier br = new CyclicBarrier(3);
         for(int i=0;i<counters.length;i++){
-            counters[i]=new TicketCounter("Counter "+(i+1),shows,"C"+(i+1)+".txt");
+            counters[i]=new TicketCounter("Counter "+(i+1),shows,"C"+(i+1)+".txt",checkpoint);
+            counters[i].setBarrier(br);
             counters[i].start();
         }
-        
-        //check point
-        
-        
+  
         //print summary
         try{
            counters[0].join();
@@ -77,6 +77,7 @@ public class Theatre {
        }
        catch (InterruptedException e){ }
         
+        System.out.println("");
         System.out.println("Summary");
         for(int i=0;i<shows.length;i++){
             for(int j=0;j<shows[i].length;j++){

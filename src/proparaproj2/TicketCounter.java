@@ -3,21 +3,31 @@ package proparaproj2;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 public class TicketCounter extends Thread{
     private Show[][] shows;//2d array of show
     private Scanner scan;
+    private CyclicBarrier finish;
+    private int checkpoint;
+    static private boolean cp_printed;
     
-    public TicketCounter(String name,Show[][] show_in,String filename){
+    public TicketCounter(String name,Show[][] show_in,String filename,int cp/*checkpoint*/){
         super(name);
         shows= new Show[3][2]; //3 days, each with 2 time
         shows=show_in;
+        checkpoint=cp;
+        cp_printed=false;
         try{
             scan=new Scanner(new File(filename));
         }
         catch(FileNotFoundException e){ 
                 System.out.println(e);
         }
+    }
+    public void setBarrier(CyclicBarrier br){
+        finish=br;
     }
     public void run(){
         String line,status;
@@ -30,6 +40,19 @@ public class TicketCounter extends Thread{
             line = scan.nextLine();
             buf = line.split("\\s+");
             id = Integer.parseInt(buf[0]);
+            
+            if(id==checkpoint){
+                try{
+                    finish.await();
+                    if(!cp_printed){
+                        cp_printed=true;
+                        checkpoint_printing();
+                    }
+                    sleep(5);//let the printing thread finish printing first
+                }
+                catch(InterruptedException | BrokenBarrierException e){}
+            }
+            
             day = Integer.parseInt(buf[2]);
             if(buf[3].compareTo("afternoon")==0)time=0;
             else time=1;
@@ -56,5 +79,15 @@ public class TicketCounter extends Thread{
         if(booker.time==0)time="afternoon";
         else time="evening";
         System.out.printf("%-10s > #%2d %-10s books %2d seats for day %d (%-9s) -- %-10s\n",getName(),booker.trans_id,booker.name,booker.seats_req,booker.day,time,status);
+    }
+    public synchronized void checkpoint_printing(){
+        System.out.println("");
+        System.out.println("Checkpoint");
+            for(int i=0;i<shows.length;i++){
+                for(int j=0;j<shows[i].length;j++){
+                    shows[i][j].printavailseat();
+            }
+        }
+        System.out.println("");
     }
 }
