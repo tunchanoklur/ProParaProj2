@@ -22,4 +22,9 @@ public class TicketCounter extends Thread{
     public void run(){
         
     }
+    /*
+    public void printname(){
+        System.out.println(getName());
+    }
+    */
 }

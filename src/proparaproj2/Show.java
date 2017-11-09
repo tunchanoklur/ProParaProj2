@@ -14,6 +14,7 @@ public class Show{
         customers=new ArrayList<Customer>();
     }
     
+    //Should be access by one thread at a time
     synchronized public int bookSeats(){
         return 0;
     }
