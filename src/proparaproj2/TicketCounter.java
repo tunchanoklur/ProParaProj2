@@ -10,7 +10,7 @@ public class TicketCounter extends Thread{
     private Show[][] shows;//2d array of show
     private Scanner scan;
     private CyclicBarrier finish;
-    private int checkpoint;
+    private static int checkpoint;
     static private boolean cp_printed;
     
     public TicketCounter(String name,Show[][] show_in,String filename,int cp/*checkpoint*/){
@@ -40,7 +40,9 @@ public class TicketCounter extends Thread{
             line = scan.nextLine();
             buf = line.split("\\s+");
             id = Integer.parseInt(buf[0]);
+            day = Integer.parseInt(buf[2]);
             
+            //check if it is the checkpoint
             if(id==checkpoint){
                 try{
                     finish.await();
@@ -52,8 +54,7 @@ public class TicketCounter extends Thread{
                 }
                 catch(InterruptedException | BrokenBarrierException e){}
             }
-            
-            day = Integer.parseInt(buf[2]);
+
             if(buf[3].compareTo("afternoon")==0)time=0;
             else time=1;
             req_seat = Integer.parseInt(buf[4]);
