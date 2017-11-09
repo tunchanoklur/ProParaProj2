@@ -66,6 +66,22 @@ public class Theatre {
             counters[i].start();
         }
         
+        //check point
         
+        
+        //print summary
+        try{
+           counters[0].join();
+           counters[1].join();
+           counters[2].join();
+       }
+       catch (InterruptedException e){ }
+        
+        System.out.println("Summary");
+        for(int i=0;i<shows.length;i++){
+            for(int j=0;j<shows[i].length;j++){
+                shows[i][j].printsummary();
+            }
+        }
     }
 }

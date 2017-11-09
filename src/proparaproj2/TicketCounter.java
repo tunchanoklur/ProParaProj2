@@ -35,9 +35,9 @@ public class TicketCounter extends Thread{
             else time=1;
             req_seat = Integer.parseInt(buf[4]);
             booker[0] = new Customer(id,buf[1],day,time,req_seat);
-            
-            for(int i=0;i<(2-time);i++){
-                if(i==1)booker[0].changetime();
+            //booking the seat
+            for(int i=0;i<(2-time);i++){//if it is afternoon, we need to check 2 times(it can still take evening show)
+                if(i==1)booker[0].changetime();//check for new time on same day
                 booked = shows[day-1][time+i].bookSeats(req_seat,booker[0]);
                 if(booked){
                     status="succeed";

@@ -17,4 +17,7 @@ public class Customer{
     public void changetime(){
         time++;
     }
+    public void printbookinginfo(){
+        System.out.printf("\t%-10s (%2d seats)\n",name,seats_req);
+    }
 }
