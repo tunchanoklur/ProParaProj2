@@ -55,6 +55,6 @@ public class TicketCounter extends Thread{
         String time;
         if(booker.time==0)time="afternoon";
         else time="evening";
-        System.out.printf("%-10s > #%2d %-10s books %2d seats for day %d (%-10s) -- %-10s\n",getName(),booker.trans_id,booker.name,booker.seats_req,booker.day,time,status);
+        System.out.printf("%-10s > #%2d %-10s books %2d seats for day %d (%-9s) -- %-10s\n",getName(),booker.trans_id,booker.name,booker.seats_req,booker.day,time,status);
     }
 }

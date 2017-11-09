@@ -18,6 +18,6 @@ public class Customer{
         time++;
     }
     public void printbookinginfo(){
-        System.out.printf("\t%-10s (%2d seats)\n",name,seats_req);
+        System.out.printf("\t%-11s (%2d seats)\n",name,seats_req);
     }
 }

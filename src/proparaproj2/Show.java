@@ -27,10 +27,10 @@ public class Show{
         }
     }
     public void printavailseat(){
-        System.out.printf("Day %d (%-10s): available seats = %3d ",day,time,seats);
+        System.out.printf("Day %d (%-9s): available seats = %3d ",day,time,seats);
     }
-    public void printsummary(){
-        System.out.printf("Day %d (%-10s)\n",day,time);
+    public void printsummary(int ini_seats){
+        System.out.printf("Day %d (%-9s) : %3d seats taken\n",day,time,(ini_seats-seats));
         for(int i=0;customers.size()>i;i++){
             customers.get(i).printbookinginfo();
         }
