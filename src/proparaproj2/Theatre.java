@@ -18,7 +18,7 @@ public class Theatre {
                     System.out.printf("Maximum seats in the theatre: ");
                     seats = user_in.nextInt();
                     user_in.nextLine(); //read left over /r
-                    if(seats<0)throw new Exception();
+                    if(seats<=0)throw new Exception();
                 }
                 catch(Exception e){
                     user_in.next();//read left over word
@@ -33,7 +33,7 @@ public class Theatre {
                     System.out.printf("Checkpoint at transaction ID: ");
                     checkpoint = user_in.nextInt();
                     user_in.nextLine(); //read left over /r
-                    if(checkpoint<0)throw new Exception();
+                    if(checkpoint<=0|| checkpoint>10)throw new Exception();
                 }
                 catch(Exception e){
                     user_in.next();//read left over word
