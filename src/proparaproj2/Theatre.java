@@ -17,8 +17,11 @@ public class Theatre {
                 try{
                     System.out.printf("Maximum seats in the theatre: ");
                     seats = user_in.nextInt();
-                    user_in.nextLine(); //read left over /r
-                    if(seats<=0)throw new Exception();
+                    if(seats<=0)throw new NumberFormatException();
+                }
+                catch(NumberFormatException e){
+                    System.out.println("Input not in range! please try again");
+                    wrong_input = true;
                 }
                 catch(Exception e){
                     user_in.next();//read left over word
@@ -27,13 +30,17 @@ public class Theatre {
                 }
         }
         while(wrong_input);
+        
         do{
             wrong_input = false;
                 try{
                     System.out.printf("Checkpoint at transaction ID: ");
                     checkpoint = user_in.nextInt();
-                    user_in.nextLine(); //read left over /r
-                    if(checkpoint<=0|| checkpoint>10)throw new Exception();
+                    if(checkpoint<=0|| checkpoint>10)throw new NumberFormatException();
+                }
+                catch(NumberFormatException e){
+                    System.out.println("Input not in range! please try again");
+                    wrong_input = true;
                 }
                 catch(Exception e){
                     user_in.next();//read left over word
@@ -54,17 +61,9 @@ public class Theatre {
         
         //Create 3 TicketCounter
         TicketCounter[] counters=new TicketCounter[3];
-        //String filename;
         for(int i=0;i<counters.length;i++){
-            /*
-            switch (i) {
-                case 0 : filename="C1.txt";break;
-                case 1 : filename="C2.txt";break;
-                default: filename="C3.txt";break;
-            }*/
             counters[i]=new TicketCounter("Counter "+(i+1),shows,"C"+(i+1)+".txt");
-            //counters[i].printname();
-            //counters[i].start();
+            counters[i].start();
         }
         
         

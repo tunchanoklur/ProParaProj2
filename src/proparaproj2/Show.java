@@ -7,6 +7,7 @@ public class Show{
     String time; //afternoon evening
     int seats;
     ArrayList<Customer> customers;
+    
     public Show(int d,String t,int seat_in){
         day=d;
         time=t;
@@ -15,7 +16,14 @@ public class Show{
     }
     
     //Should be access by one thread at a time
-    synchronized public int bookSeats(){
-        return 0;
+    synchronized public boolean bookSeats(int booking,Customer booker){
+        if(booking<=seats){
+            seats -= booking;
+            customers.add(booker);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
