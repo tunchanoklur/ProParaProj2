@@ -1,7 +1,6 @@
 package proparaproj2;
 
 import java.util.*;
-import java.io.*;
 import java.util.concurrent.CyclicBarrier;
 
 public class Theatre {
@@ -12,7 +11,7 @@ public class Theatre {
         Scanner user_in = new Scanner(System.in);
         int seats=0,checkpoint=0;
         boolean wrong_input;
-        
+        //get theatre seats
         do{
             wrong_input = false;
                 try{
@@ -31,13 +30,13 @@ public class Theatre {
                 }
         }
         while(wrong_input);
-        
+        //get checkpoint for transaction id
         do{
             wrong_input = false;
                 try{
-                    System.out.printf("Checkpoint at transaction ID(2-10): ");
+                    System.out.printf("Checkpoint at transaction ID<1-10>: ");
                     checkpoint = user_in.nextInt();
-                    if(checkpoint<=1|| checkpoint>10)throw new NumberFormatException();
+                    if(checkpoint<1|| checkpoint>10)throw new NumberFormatException();
                 }
                 catch(NumberFormatException e){
                     System.out.println("Input not in range! please try again");
@@ -50,7 +49,7 @@ public class Theatre {
                 }
         }
         while(wrong_input);
-        
+        //create the shows
         for(int i=0;i<shows.length;i++){
             for(int j=0;j<shows[i].length;j++){
                 if(j==0)time="afternoon";
@@ -60,7 +59,7 @@ public class Theatre {
             }
         }
         
-        //Create 3 TicketCounter
+        //Create 3 TicketCounter + barrier for checkpoint
         TicketCounter[] counters=new TicketCounter[3];
         CyclicBarrier br = new CyclicBarrier(3);
         for(int i=0;i<counters.length;i++){
