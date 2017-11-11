@@ -1,10 +1,12 @@
 package proparaproj2;
 
+import static java.lang.Thread.sleep;
 import java.util.*;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 public class Theatre {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws BrokenBarrierException {
         //Create 6 Show objects
         Show[][] shows= new Show[3][2]; //3 days, each with 2 time
         String time;
@@ -61,13 +63,28 @@ public class Theatre {
         
         //Create 3 TicketCounter + barrier for checkpoint
         TicketCounter[] counters=new TicketCounter[3];
-        CyclicBarrier br = new CyclicBarrier(3);
+        CyclicBarrier br = new CyclicBarrier(4);//including main thread
         for(int i=0;i<counters.length;i++){
-            counters[i]=new TicketCounter("Counter "+(i+1),shows,"C"+(i+1)+".txt",checkpoint);
-            counters[i].setBarrier(br);
+            counters[i]=new TicketCounter("Counter "+(i+1),shows,"C"+(i+1)+".txt",checkpoint,br);
             counters[i].start();
         }
-  
+        
+        //print checkpoint
+        //wait for all thread to reach the barrier
+        try{
+            br.await();//for main thread
+        }
+        catch(InterruptedException | BrokenBarrierException e){}
+        
+        System.out.println("");
+        System.out.println("Checkpoint");
+            for(int i=0;i<shows.length;i++){
+                for(int j=0;j<shows[i].length;j++){
+                    shows[i][j].printavailseat();
+            }
+        }
+        System.out.println("");
+        
         //print summary
         try{
            counters[0].join();

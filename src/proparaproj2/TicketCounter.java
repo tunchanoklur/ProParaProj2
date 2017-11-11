@@ -9,16 +9,15 @@ import java.util.concurrent.CyclicBarrier;
 public class TicketCounter extends Thread{
     private Show[][] shows;//2d array of show
     private Scanner scan;
-    private CyclicBarrier finish;
+    private CyclicBarrier barrier;
     static private int checkpoint;
-    static private boolean cp_printed;
     
-    public TicketCounter(String name,Show[][] show_in,String filename,int cp/*checkpoint*/){
+    public TicketCounter(String name,Show[][] show_in,String filename,int cp/*checkpoint*/,CyclicBarrier br){
         super(name);
         shows= new Show[3][2]; //3 days, each with 2 time
         shows=show_in;
         checkpoint=cp;
-        cp_printed=false;
+        barrier=br;
         try{
             scan=new Scanner(new File(filename));
         }
@@ -26,9 +25,7 @@ public class TicketCounter extends Thread{
                 System.out.println(e);
         }
     }
-    public void setBarrier(CyclicBarrier br){
-        finish=br;
-    }
+    
     public void run(){
         String line,status;
         String[] buf;
@@ -52,17 +49,13 @@ public class TicketCounter extends Thread{
                 //check if it is the checkpoint
                 if(id==checkpoint){
                     try{
-                        finish.await();
-                        if(!cp_printed){
-                            cp_printed=true;
-                            checkpoint_printing();
-                        }
-                        sleep(10);//let the printing thread finish printing first
+                        barrier.await();
+                        sleep(15);//let main thread finish printing checkpoint first
                     }
                     catch(InterruptedException | BrokenBarrierException e){}
                 }
 
-                booker[0] = new Customer(id,buf[1],day,time,req_seat);
+                booker[0] = new Customer(id,buf[1],time,req_seat);
                 //booking the seat
                 //In this part, the using information will come from customer as it is easier to understand
                 for(int i=0;i<(2-time);i++){//if it is afternoon, we need to check 2 times(it can still take evening show)
@@ -70,31 +63,21 @@ public class TicketCounter extends Thread{
                     booked = shows[day-1][time+i].bookSeats(req_seat,booker[0]);
                     if(booked){
                         status="succeed";
-                        printbooking(booker[0],status);
+                        printbooking(booker[0],status,day);
                         break;
                     }
                     else{
                         status="fail";
-                        printbooking(booker[0],status);
+                        printbooking(booker[0],status,day);
                     }
                 }
             }
         }
     }
-    public void printbooking(Customer booker,String status){
+    public void printbooking(Customer booker,String status,int day){
         String time;
         if(booker.time==0)time="afternoon";
         else time="evening";
-        System.out.printf("%-10s > #%2d %-10s books %2d seats for day %d (%-9s) -- %-10s\n",getName(),booker.trans_id,booker.name,booker.seats_req,booker.day,time,status);
-    }
-    public synchronized void checkpoint_printing(){
-        System.out.println("");
-        System.out.println("Checkpoint");
-            for(int i=0;i<shows.length;i++){
-                for(int j=0;j<shows[i].length;j++){
-                    shows[i][j].printavailseat();
-            }
-        }
-        System.out.println("");
+        System.out.printf("%-10s > #%2d %-10s books %2d seats for day %d (%-9s) -- %-10s\n",getName(),booker.trans_id,booker.name,booker.seats_req,day,time,status);
     }
 }
